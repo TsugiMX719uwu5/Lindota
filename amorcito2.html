@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Libro Animado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('fondo-abstracto-rosa-suave-disenos-elegantes-femeninos_889452-64708.avif') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Dancing Script', cursive;
+        }
+        .book {
+            width: 300px;
+            height: 400px;
+            position: relative;
+            perspective: 1000px;
+        }
+        .page {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transform-origin: left;
+            transition: transform 1s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .page img {
+            width: 90%;
+            height: 90%;
+            border-radius: 5px;
+        }
+        .page {
+            transform: rotateY(0deg);
+        }
+        .flipped {
+            transform: rotateY(-180deg);
+        }
+        button {
+            margin-top: 20px;
+            font-size: 20px;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+            background-color: #ff6f91;
+            color: white;
+            border-radius: 5px;
+        }
+        .audio-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .audio-container p {
+            font-size: 18px;
+            color: #ff6f91;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <audio id="pageSound" src="page-flip.mp3"></audio>
+    <div class="book">
+        <div class="page"><img src="a3e7ced9-70dd-42ad-9dd6-5b8795e35817.jpg" alt="Imagen 1"></div>
+        <div class="page"><img src="imagen2.jpg" alt="Imagen 2"></div>
+        <div class="page"><img src="imagen3.jpg" alt="Imagen 3"></div>
+        <div class="page"><img src="imagen4.jpg" alt="Imagen 4"></div>
+        <div class="page"><img src="imagen5.jpg" alt="Imagen 5"></div>
+    </div>
+    <div>
+        <button onclick="prevPage()">◀</button>
+        <button onclick="nextPage()">▶</button>
+    </div>
+    <div class="audio-container">
+        <p>For my women</p>
+        <audio controls>
+            <source src="mi-audio.mp3" type="audio/mpeg">
+            Tu navegador no soporta el elemento de audio.
+        </audio>
+    </div>
+    <script>
+        let currentPage = 0;
+        const pages = document.querySelectorAll(".page");
+        const pageSound = document.getElementById("pageSound");
+        
+        function nextPage() {
+            if (currentPage < pages.length) {
+                pages[currentPage].classList.add("flipped");
+                currentPage++;
+                pageSound.play();
+            }
+        }
+        
+        function prevPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                pages[currentPage].classList.remove("flipped");
+                pageSound.play();
+            }
+        }
+    </script>
+</body>
+</html>

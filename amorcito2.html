@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Libro Animado</title>
+    <title>Carrusel Animado</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -15,39 +15,29 @@
             background: url('fondo-abstracto-rosa-suave-disenos-elegantes-femeninos_889452-64708.avif') no-repeat center center fixed;
             background-size: cover;
             font-family: 'Dancing Script', cursive;
+            padding: 20px;
         }
-        .book {
-            width: 300px;
-            height: 400px;
+        .carousel-container {
+            width: 90%;
+            max-width: 350px;
+            overflow: hidden;
             position: relative;
-            perspective: 1000px;
-        }
-        .page {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            background: white;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transform-origin: left;
-            transition: transform 1s;
+        }
+        .carousel {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            transition: transform 1s ease-in-out;
         }
-        .page img {
-            width: 90%;
-            height: 90%;
-            border-radius: 5px;
+        .carousel img {
+            width: 100%;
+            border-radius: 10px;
+            object-fit: cover;
         }
-        .page {
-            transform: rotateY(0deg);
-        }
-        .flipped {
-            transform: rotateY(-180deg);
+        .buttons {
+            margin-top: 20px;
         }
         button {
-            margin-top: 20px;
             font-size: 20px;
             padding: 10px;
             cursor: pointer;
@@ -55,6 +45,7 @@
             background-color: #ff6f91;
             color: white;
             border-radius: 5px;
+            margin: 5px;
         }
         .audio-container {
             margin-top: 20px;
@@ -68,17 +59,18 @@
     </style>
 </head>
 <body>
-    <audio id="pageSound" src="page-flip.mp3"></audio>
-    <div class="book">
-        <div class="page"><img src="a3e7ced9-70dd-42ad-9dd6-5b8795e35817.jpg" alt="Imagen 1"></div>
-        <div class="page"><img src="951f6659-d19f-4429-a9c0-921759d028b9.jpg" alt="Imagen 2"></div>
-        <div class="page"><img src="3438d46f-4f52-4ccd-ad5a-040bd877852d.jpg" alt="Imagen 3"></div>
-        <div class="page"><img src="imagen4.jpg" alt="Imagen 4"></div>
-        <div class="page"><img src="imagen5.jpg" alt="Imagen 5"></div>
+    <audio id="slideSound" src="page-flip.mp3"></audio>
+    <div class="carousel-container">
+        <div class="carousel">
+            <img src="cd04937a-583a-4bf6-a685-24b8ef0d70ca.jpg" alt="Imagen 1">
+            <img src="a3e7ced9-70dd-42ad-9dd6-5b8795e35817.jpg" alt="Imagen 2">
+            <img src="951f6659-d19f-4429-a9c0-921759d028b9.jpg" alt="Imagen 3">
+            <img src="3438d46f-4f52-4ccd-ad5a-040bd877852d.jpg" alt="Imagen 4">
+        </div>
     </div>
-    <div>
-        <button onclick="prevPage()">◀</button>
-        <button onclick="nextPage()">▶</button>
+    <div class="buttons">
+        <button onclick="prevSlide()">◀</button>
+        <button onclick="nextSlide()">▶</button>
     </div>
     <div class="audio-container">
         <p>For my women</p>
@@ -88,25 +80,37 @@
         </audio>
     </div>
     <script>
-        let currentPage = 0;
-        const pages = document.querySelectorAll(".page");
-        const pageSound = document.getElementById("pageSound");
-        
-        function nextPage() {
-            if (currentPage < pages.length) {
-                pages[currentPage].classList.add("flipped");
-                currentPage++;
-                pageSound.play();
-            }
+        let currentIndex = 0;
+        const carousel = document.querySelector('.carousel');
+        const images = document.querySelectorAll('.carousel img');
+        const totalImages = images.length;
+        const slideSound = document.getElementById("slideSound");
+
+        function updateCarousel() {
+            const offset = -currentIndex * 100;
+            carousel.style.transform = `translateX(${offset}%)`;
+            slideSound.play();
         }
-        
-        function prevPage() {
-            if (currentPage > 0) {
-                currentPage--;
-                pages[currentPage].classList.remove("flipped");
-                pageSound.play();
+
+        function nextSlide() {
+            if (currentIndex < totalImages - 1) {
+                currentIndex++;
+            } else {
+                currentIndex = 0;
             }
+            updateCarousel();
         }
+
+        function prevSlide() {
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                currentIndex = totalImages - 1;
+            }
+            updateCarousel();
+        }
+
+        setInterval(nextSlide, 5000); // Cambio automático cada 5 segundos
     </script>
 </body>
 </html>
